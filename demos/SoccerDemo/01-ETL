@@ -243,3 +243,82 @@ joinedDf.write.saveAsTable("GAME_EVENTS", format = "parquet", mode = "overwrite"
 # MAGIC %sql
 # MAGIC 
 # MAGIC DESCRIBE GAME_EVENTS;
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ##Optional
+# MAGIC There are even more ways to persist transformed data. For example into a file or directly into another database.
+
+# COMMAND ----------
+
+joinedDf.write.parquet("adl://" + adlsurl + "/CURATED/EuropeanSoccerEvents/GAME_EVENTS.parquet")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC ##Write game event data to a Azure SQL Database
+# MAGIC 
+# MAGIC To write to a table in an database outside of databricks, you need to create the table first.
+# MAGIC 
+# MAGIC ```
+# MAGIC CREATE SCHEMA [Analysis] AUTHORIZATION [dbo];
+# MAGIC GO
+# MAGIC 
+# MAGIC CREATE TABLE [Analysis].[GAME_EVENTS]
+# MAGIC (
+# MAGIC     id_odsp NVARCHAR(25) NULL,
+# MAGIC     id_event NVARCHAR(25) NOT NULL,
+# MAGIC     sort_order INT NULL,
+# MAGIC     time SMALLINT NULL,
+# MAGIC     event_type SMALLINT NULL,
+# MAGIC     event_type_str NVARCHAR(128) NULL,
+# MAGIC     event_type2 SMALLINT NULL,
+# MAGIC     event_type2_str NVARCHAR(128) NULL,
+# MAGIC     side SMALLINT NULL,
+# MAGIC     side_str NVARCHAR(128) NULL,
+# MAGIC     event_team NVARCHAR(128) NULL,
+# MAGIC     opponent NVARCHAR(128) NULL,
+# MAGIC     player NVARCHAR(128) NULL,
+# MAGIC     player2 NVARCHAR(128) NULL,
+# MAGIC     player_in NVARCHAR(128) NULL,
+# MAGIC     player_out NVARCHAR(128) NULL,
+# MAGIC     shot_place SMALLINT NULL,
+# MAGIC     shot_place_str NVARCHAR(128) NULL,
+# MAGIC     shot_outcome SMALLINT NULL,
+# MAGIC     shot_outcome_str NVARCHAR(128) NULL,
+# MAGIC     is_goal BIT NULL,
+# MAGIC     location SMALLINT NULL,
+# MAGIC     location_str NVARCHAR(128) NULL,
+# MAGIC     bodypart SMALLINT NULL,
+# MAGIC     bodypart_str NVARCHAR(128) NULL,
+# MAGIC     assist_method SMALLINT NULL,
+# MAGIC     assist_method_str NVARCHAR(128) NULL,
+# MAGIC     situation SMALLINT NULL,
+# MAGIC     situation_str NVARCHAR(128) NULL,
+# MAGIC     time_bin SMALLINT NULL,
+# MAGIC     country_code NVARCHAR(25) NULL
+# MAGIC ) ON [PRIMARY];
+# MAGIC GO```
+
+# COMMAND ----------
+
+jdbcHostname = dbutils.secrets.get(scope = "AzureKeyVault01", key = "sqlserver01-uri")
+jdbcPort = dbutils.secrets.get(scope = "AzureKeyVault01", key = "sqlserver01-port")
+jdbcUsername = dbutils.secrets.get(scope = "AzureKeyVault01", key = "sqlserver01-username")
+jdbcPassword = dbutils.secrets.get(scope = "AzureKeyVault01", key = "sqlserver01-password")
+
+jdbcDatabase = 'SoccerDemo'
+jdbcTable = 'Analysis.GAME_EVENTS'
+
+jdbcURL = 'jdbc:sqlserver://' + jdbcHostname + ':' + jdbcPort + ';database=' + jdbcDatabase
+connectionProperties = {
+  "user" : jdbcUsername,
+  "password" : jdbcPassword,
+  "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+}
+
+azureSqlDf = joinedDf.repartition(1)
+
+azureSqlDf.write.jdbc(jdbcURL, jdbcTable, mode = 'overwrite', properties=connectionProperties )

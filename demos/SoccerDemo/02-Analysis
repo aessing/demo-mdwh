@@ -159,6 +159,7 @@ def jsonColList(jlist, col, default_val, limit=10000):
 # COMMAND ----------
 
 vizDf = spark.sql("SELECT shot_place_str, location_str, is_goal FROM GAME_EVENTS WHERE is_goal=1 AND location_str != 'NA' AND shot_place_str != 'NA'")
+
 vizDf = vizDf.groupBy("shot_place_str","location_str").sum("is_goal").withColumnRenamed("sum(is_goal)","tot_goals").na.fill(0)
 
 display(vizDf)
