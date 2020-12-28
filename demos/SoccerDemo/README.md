@@ -1,11 +1,10 @@
-# European Soccer Events Analysis - Data Engineering
-
+# European Soccer Events Analysis
 A soccer game or any other sport generates many events, which help solve a number of use cases across the Sports and Media & Entertainment industries:
   * Like what on-field playing conditions and events (passes, positions etc.) leads to more goals/touch-downs etc.*
   * Or what does the win-loss percentage looks like with different combinations of players in different on-field positions*
   * Or what does a sportsperson's performance graph look like across the years/seasons and teams etc.*
 
-![](https://databricks.com/wp-content/uploads/2018/07/European-Soccer-Events-Analysis-Diagram.png)
+![](../../.media/EuropeSoccerEvent.png)
 
 This demo uses a European Soccer Games events dataset, and demonstrates:
   * End-to-end Data Engineering pipeline including data extraction, transformation and loading*
