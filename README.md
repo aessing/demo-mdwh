@@ -1,15 +1,13 @@
-![Azure Databricks Logo](.media/databricks-logo.png)
-
-# Modern Datawarehouse with Azure Databricks Demos
+![Modern Data Warehouse Demos](docs/images/banner.png)
 
 This repository hosts all my demos I use to show Azure Databricks
 
 The content of this repository is intended only as a supplement to my presentations, demos, and lectures.
 
 #  Azure Synapse Analytics Demos
-This repository includes all code of my Modern Datawarehouse with Azure Databricks demo environment. I use the source control capabilities of Databricks, Azure Data Factory, etc. to keep this repositoy in sync with my work.
+This repository includes all code of my Modern Data Warehouse with Azure Databricks demo environment. I use the source control capabilities of Databricks, Azure Data Factory, etc. to keep this repositoy in sync with my work.
 
-![Modern Datawarehouse Architecture](.media/mdwh-architecture.png)
+![Modern Data Warehouse Architecture](docs/images/mdwh-architecture.png)
 
 ## Big data analytics and AI with optimized Apache Spark
 Unlock insights from all your data and build artificial intelligence (AI) solutions with Azure Databricks, set up your Apache Spark™ environment in minutes, autoscale, and collaborate on shared projects in an interactive workspace. Azure Databricks supports Python, Scala, R, Java, and SQL, as well as data science frameworks and libraries including TensorFlow, PyTorch, and scikit-learn.
